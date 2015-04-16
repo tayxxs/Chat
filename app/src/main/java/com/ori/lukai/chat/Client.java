@@ -1,8 +1,11 @@
 package com.ori.lukai.chat;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,26 +14,20 @@ import java.net.Socket;
  * Created by lukai on 4/11/2015.
  */
 public class Client {
-    public static void main(String[] args) throws Exception{
-        //向本机的8080端口发出客户请求
-        Socket socket = new Socket(InetAddress.getLocalHost(),8080);
-        BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream())) ;
-        PrintWriter os = new PrintWriter(socket.getOutputStream());
+    public Socket socket;
+    public boolean sendLoginInfo(Object obj) {
+        boolean b = false;
+        try {
+            socket = new Socket(InetAddress.getLocalHost(), 8080);
+            //客户端输出流
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.writeObject(obj);
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
-        BufferedReader scrin = new BufferedReader(new InputStreamReader(System.in));
-        while(true){
-            String str = scrin.readLine();
-            os.println(str);
-            os.flush();
-
-            String fs = is.readLine();
-            System.out.println("Server :" + fs);
-            if(str.equals("end")){//输入end结束从server接收信息
-                break;
-            }
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        is.close();
-        os.close();
-        socket.close();
+        return b;
     }
 }

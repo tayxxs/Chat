@@ -1,9 +1,13 @@
 package com.ori.lukai.chat;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -35,5 +39,10 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void login(View view){
+        Intent intent = new Intent(this,MyActivity.class);
+        startActivity(intent);
     }
 }
