@@ -17,13 +17,17 @@ import java.net.SocketTimeoutException;
  */
 public class Client {
     public Socket socket;
-    public String sendLoginInfo(Object obj) {
+    /*
+    由于登陆和注册的结果都是要进入myActivity的，所以b获值true即可
+     */
+    public boolean sendLoginInfo(Object obj) {
 
-        InetAddress add;
-        String test = null;
+        InetAddress address;
+        boolean b = false;
         try {
-            add = InetAddress.getByName("10.202.119.40");
-            socket = new Socket(add,5469);
+            //连接SERVER
+            address = InetAddress.getByName("192.168.1.6");
+            socket = new Socket(address,5469);
             /*
             try {
                 socket.connect(new InetSocketAddress("192.168.1.104",5469),2000);
@@ -34,7 +38,7 @@ public class Client {
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(obj);
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            test = (String) ois.readObject();
+            b = (boolean)ois.readObject();
             ois.close();
             oos.close();
             socket.close();
@@ -44,6 +48,6 @@ public class Client {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return test;
+        return b;
     }
 }

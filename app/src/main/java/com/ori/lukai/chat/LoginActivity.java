@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -40,9 +45,42 @@ public class LoginActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void login(View view){
-        Intent intent = new Intent(this,MyActivity.class);
+/*
+按下“注册”按钮执行此程序
+ */
+    public void register(View view){
+        Intent intent = new Intent(this,RegisterActivity.class);
         startActivity(intent);
+
+    }
+/*
+按下“登陆”按钮执行此程序
+ */
+    public void login(View view){
+        //获取登陆界面的账户名
+        String tem = ((EditText)findViewById(R.id.chat_account)).getText().toString();
+        //检测EDITTEXT是否为空，因为Integer不能将空字符转为INT
+        if("".equals(tem)) {
+            Toast.makeText(this, "用户名不能为空！Poi！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int account = Integer.parseInt(tem);
+        //获取密码
+        String password = ((EditText)findViewById(R.id.chat_password)).getText().toString();
+        isTrue(account, password);
+
+    }
+
+    public void isTrue(int a, String p) {
+        User user = new User(a,p);
+        user.setOperation("login");
+        boolean b = new Client().sendLoginInfo(user);  //将User传至Server判断是否为注册用户
+        if(b) {
+            Intent intent = new Intent(this,MyActivity.class);
+            startActivity(intent);
+        }else {
+           Toast.makeText(this,"Fail To Connect! POI!",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

@@ -54,6 +54,7 @@
             android:layout_marginTop="12.0dip"
             android:textSize="16sp"
             android:text="注册"
+            android:onClick="register"
             />
         </RelativeLayout>
 
